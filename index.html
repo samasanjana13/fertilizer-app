@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fertilizer Guide</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&amp;family=Noto+Sans+Telugu:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+  html, body { height: 100%; width: 100%; margin: 0; }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #f4efe6;
+    color: #2d3319;
+  }
+  .font-telugu { font-family: 'Noto Sans Telugu', sans-serif; }
+  .font-display { font-family: 'Fraunces', serif; }
+  
+  .leaf-pattern {
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(101, 138, 66, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(180, 138, 65, 0.08) 0%, transparent 40%);
+  }
+  
+  .card-shadow {
+    box-shadow: 0 4px 20px rgba(45, 51, 25, 0.08), 0 1px 3px rgba(45, 51, 25, 0.06);
+  }
+  
+  .card-shadow-hover:hover {
+    box-shadow: 0 12px 32px rgba(45, 51, 25, 0.12), 0 2px 6px rgba(45, 51, 25, 0.08);
+    transform: translateY(-2px);
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.4s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .stagger > * {
+    animation: fadeIn 0.5s ease-out both;
+  }
+  .stagger > *:nth-child(1) { animation-delay: 0.05s; }
+  .stagger > *:nth-child(2) { animation-delay: 0.1s; }
+  .stagger > *:nth-child(3) { animation-delay: 0.15s; }
+  .stagger > *:nth-child(4) { animation-delay: 0.2s; }
+  .stagger > *:nth-child(5) { animation-delay: 0.25s; }
+  .stagger > *:nth-child(6) { animation-delay: 0.3s; }
+  
+  .lang-toggle {
+    transition: all 0.3s ease;
+  }
+  
+  .lang-pill {
+    transition: all 0.3s ease;
+  }
+  
+  .lang-pill.active {
+    background: #2d3319;
+    color: #f4efe6;
+  }
+  
+  .detail-section {
+    animation: slideIn 0.4s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  
+  .category-btn {
+    transition: all 0.25s ease;
+  }
+  
+  .category-btn.active {
+    background: #2d3319;
+    color: #f4efe6;
+  }
+  
+  .grain {
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(45, 51, 25, 0.04) 1px, transparent 1px),
+      radial-gradient(circle at 75% 75%, rgba(45, 51, 25, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #ebe3d3; }
+  ::-webkit-scrollbar-thumb { background: #8a9466; border-radius: 4px; }
+  
+  .tag {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full w-full leaf-pattern grain overflow-auto">
+  <main class="w-full min-h-full">
+   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+    <!-- Header -->
+    <header class="mb-8 sm:mb-12">
+     <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
+      <div class="flex items-center gap-3">
+       <div class="w-12 h-12 rounded-xl bg-[#2d3319] flex items-center justify-center">
+        <i data-lucide="sprout" class="text-[#c9d080]" style="width: 24px; height: 24px;"></i>
+       </div>
+       <div>
+        <div class="tag text-[#658a42]" id="brand-tag">
+         Agricultural Guide
+        </div>
+        <div class="text-xs text-[#6b7355] mt-0.5" id="brand-sub">
+         Smart farming knowledge
+        </div>
+       </div>
+      </div><!-- Language Toggle -->
+      <div class="flex bg-[#ebe3d3] rounded-full p-1 self-start">
+       <button id="lang-en" class="lang-pill active px-5 py-2 rounded-full text-sm font-semibold" onclick="setLanguage('en')"> English </button> <button id="lang-te" class="lang-pill px-5 py-2 rounded-full text-sm font-semibold font-telugu" onclick="setLanguage('te')"> తెలుగు </button>
+      </div>
+     </div>
+     <h1 id="app-title" class="font-display text-4xl sm:text-5xl lg:text-6xl font-black text-[#2d3319] leading-[1.05] tracking-tight mb-3">Fertilizer Guide</h1>
+     <p id="app-subtitle" class="text-base sm:text-lg text-[#4a5338] max-w-2xl leading-relaxed">A complete guide to fertilizers, their proper usage, and application methods for healthier crops.</p>
+    </header><!-- Category Filter -->
+    <div class="mb-6 flex flex-wrap gap-2" id="category-filter"></div><!-- Main content grid -->
+    <div class="grid lg:grid-cols-5 gap-6">
+     <!-- Fertilizer cards -->
+     <section class="lg:col-span-3">
+      <div id="fertilizer-grid" class="grid sm:grid-cols-2 gap-4 stagger"></div>
+     </section><!-- Detail panel -->
+     <aside class="lg:col-span-2">
+      <div id="detail-panel" class="sticky top-4 bg-white rounded-2xl card-shadow overflow-hidden"></div>
+     </aside>
+    </div><!-- Tips section -->
+    <section class="mt-10 bg-[#2d3319] rounded-2xl p-6 sm:p-8 text-[#f4efe6]">
+     <div class="flex items-center gap-2 mb-4">
+      <i data-lucide="lightbulb" class="text-[#c9d080]" style="width: 20px; height: 20px;"></i> <span class="tag text-[#c9d080]" id="tips-tag">Essential Tips</span>
+     </div>
+     <h2 id="tips-title" class="font-display text-2xl sm:text-3xl font-bold mb-6">General Application Tips</h2>
+     <div id="tips-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+    </section>
+    <footer class="mt-10 pt-6 border-t border-[#d4ccbb] text-center text-sm text-[#6b7355]">
+     <p id="footer-text">Always consult your local agricultural expert for specific recommendations</p>
+    </footer>
+   </div>
+  </main>
+  <script>
+  // ============ Data ============
+  const fertilizers = [
+    // NITROGEN FERTILIZERS
+    {
+      id: 'urea-standard',
+      icon: 'flask-conical',
+      color: '#658a42',
+      bg: '#e8efd8',
+      category: { en: 'Nitrogen', te: 'నత్రజని' },
+      name: { en: 'Urea (46% N)', te: 'యూరియా (46% నత్రజని)' },
+      brand: { en: 'Various Brands', te: 'వివిధ బ్రాండ్‌లు' },
+      formula: 'CO(NH₂)₂',
+      nutrient: { en: '46% Nitrogen', te: '46% నత్రజని' },
+      description: {
+        en: 'Most widely used nitrogen fertilizer globally. Promotes leafy green growth and boosts plant vigor. Cost-effective and easily available.',
+        te: 'ప్రపంచవ్యాప్తంగా అత్యంత విస్తృతంగా వాడే నత్రజని ఎరువు. ఆకుల పెరుగుదలను ప్రోత్సహిస్తుంది. ఆర్థిక మరియు సులభం.'
+      },
+      usage: {
+        en: ['Apply 100-150 kg per acre for paddy', 'Split into 2-3 doses during crop cycle', 'Apply before irrigation to prevent loss', 'Mix well with soil during application'],
+        te: ['వరికి ఎకరానికి 100-150 కిలోలు వేయాలి', 'పంట చక్రంలో 2-3 దఫాలుగా విభజించండి', 'నష్టం నివారించడానికి నీటిపారుదల ముందు వేయండి', 'వేసేటప్పుడు మట్టితో బాగా కలపండి']
+      },
+      crops: { en: 'Paddy, Wheat, Maize, Sugarcane', te: 'వరి, గోధుమ, మొక్కజొన్న, చెరకు' }
+    },
+    {
+      id: 'neem-urea',
+      icon: 'leaf',
+      color: '#4a6b2a',
+      bg: '#dce8c8',
+      category: { en: 'Nitrogen', te: 'నత్రజని' },
+      name: { en: 'Neem Coated Urea', te: 'నీమ్ కోటెడ్ యూరియా' },
+      brand: { en: 'Various Brands', te: 'వివిధ బ్రాండ్‌లు' },
+      formula: 'Urea + Neem Oil',
+      nutrient: { en: '44% Nitrogen + Neem', te: '44% నత్రజని + నీమ్' },
+      description: {
+        en: 'Urea coated with neem oil to slow-release nitrogen. Reduces nitrogen loss through ammonia volatilization and has pest-repellent properties.',
+        te: 'నీమ్ నూనెతో కోటెడ్ చేసిన యూరియా నెమ్మదిగా నత్రజనిని విడుదల చేస్తుంది. నత్రజని నష్టం తగ్గిస్తుంది.'
+      },
+      usage: {
+        en: ['Apply 80-120 kg per acre', 'Single or split application', 'More efficient nitrogen use than standard urea', 'Better for organic farming'],
+        te: ['ఎకరానికి 80-120 కిలోలు వేయండి', 'ఒకేసారి లేదా విభజిత దరఖాస్తు', 'సాధారణ యూరియా కంటే ఎక్కువ నిర్ణయం', 'సేంద్రీయ వ్యవసాయానికి ఉత్తమం']
+      },
+      crops: { en: 'All cereals, Pulses, Oilseeds', te: 'అన్ని ధాన్యాలు, పప్పు, నూనెగింజలు' }
+    },
+    {
+      id: 'ammonium-nitrate',
+      icon: 'zap',
+      color: '#3d6b3d',
+      bg: '#c8e0c8',
+      category: { en: 'Nitrogen', te: 'నత్రజని' },
+      name: { en: 'Ammonium Nitrate', te: 'అమోనియం నైట్రేట్' },
+      brand: { en: 'Various Brands', te: 'వివిధ బ్రాండ్‌లు' },
+      formula: 'NH₄NO₃',
+      nutrient: { en: '33.5% Nitrogen', te: '33.5% నత్రజని' },
+      description: {
+        en: 'Fast-acting nitrogen source with both ammoniacal and nitrate nitrogen. Quick results for leafy growth and immediate deficiency correction.',
+        te: 'రెండు రకాల నత్రజనితో కూడిన వేగవంతమైన నత్రజని జన్యువు. ఆకుల పెరుగుదలకు వేగవంతమైన ఫలితాలు.'
+      },
+      usage: {
+        en: ['Apply 100-150 kg per acre', 'Best applied in split doses', 'Quick uptake by plants', 'Avoid in highly acidic soils'],
+        te: ['ఎకరానికి 100-150 కిలోలు వేయండి', 'విభజిత దరఖాస్తుకు ఉత్తమం', 'మొక్కలు త్వరగా గ్రహిస్తాయి', 'ఎక్కువ ఆమ్ల నేలలో నివారించండి']
+      },
+      crops: { en: 'Vegetables, Fruits, Flowers', te: 'కూరగాయలు, పండ్లు, పూలు' }
+    },
+
+    // PHOSPHORUS FERTILIZERS
+    {
+      id: 'dap',
+      icon: 'atom',
+      color: '#b4732e',
+      bg: '#f5e4cd',
+      category: { en: 'Phosphorus', te: 'భాస్వరం' },
+      name: { en: 'DAP (18-46-0)', te: 'డిఏపి (18-46-0)' },
+      brand: { en: 'Various Brands', te: 'వివిధ బ్రాండ్‌లు' },
+      formula: '(NH₄)₂HPO₄',
+      nutrient: { en: '18% N, 46% P', te: '18% న, 46% భా' },
+      description: {
+        en: 'Diammonium Phosphate. Essential for root development, flowering, and seed formation. Most commonly used phosphate fertilizer in India.',
+        te: 'డై-అమోనియం ఫాస్ఫేట్. వేర్ల అభివృద్ధి, పుష్పించడం మరియు విత్త ఏర్పాటుకు అవసరం.'
+      },
+      usage: {
+        en: ['Apply as basal dose at sowing', '50-75 kg per acre for cereals', '75-100 kg for pulses and oilseeds', 'Place 2-3 inches below seed'],
+        te: ['విత్తే సమయంలో మూల మోతాదుగా వేయండి', 'ధాన్యాలకు ఎకరానికి 50-75 కిలోలు', 'పప్పు, నూనెగింజలకు 75-100 కిలోలు', 'విత్తనం కింద 2-3 అంగుళాలు ఉంచండి']
+      },
+      crops: { en: 'Cotton, Pulses, Oilseeds, Groundnut', te: 'పత్తి, పప్పు, నూనెగింజలు, వేరుశెనగ' }
+    },
+    {
+      id: 'ssp',
+      icon: 'layers',
+      color: '#9b6b3d',
+      bg: '#e8dcc8',
+      category: { en: 'Phosphorus', te: 'భాస్వరం' },
+      name: { en: 'Single Super Phosphate (SSP)', te: 'సింగిల్ సూపర్ ఫాస్ఫేట్' },
+      brand: { en: 'Various Brands', te: 'వివిధ బ్రాండ్‌లు' },
+      formula: 'Ca(H₂PO₄)₂',
+      nutrient: { en: '16% P, 11% S', te: '16% భా, 11% సల్ఫర్' },
+      description: {
+        en: 'Contains phosphorus and sulfur. Good for sulfur-deficient soils. More economical than DAP in many regions.',
+        te: 'భాస్వరం మరియు సల్ఫర్ కలిగి ఉంటుంది. సల్ఫర్‌ కొరతగల నేలలకు ఉత్తమం.'
+      },
+      usage: {
+        en: ['Apply 100-150 kg per acre', 'Basal application at sowing', 'Better in sulfur-deficient soils', 'Mix well before application'],
+        te: ['ఎకరానికి 100-150 కిలోలు వేయండి', 'విత్తే సమయంలో మూల దరఖాస్తు', 'సల్ఫర్ కొరతలో ఉత్తమం', 'వేయడానికి ముందు బాగా కలపండి']
+      },
+      crops: { en: 'Pulses, Oilseeds, Vegetables, Sugarcane', te: 'పప్పు, నూనెగింజలు, కూరగాయలు, చెరకు' }
+    },
+    {
+      id: 'triple-super',
+      icon: 'sparkles',
+      color: '#7b4b2b',
+      bg: '#e0cfc8',
+      category: { en: 'Phosphorus', te: 'భాస్వరం' },
+      name: { en: 'Triple Super Phosphate (TSP)', te: 'ట్రిపుల్ సూపర్ ఫాస్ఫేట్' },
+      brand: { en: 'Various Brands', te: 'వివిధ బ్రాండ్‌లు' },
+      formula: 'Ca(H₂PO₄)₂',
+      nutrient: { en: '46% P (highest)', te: '46% భా (అత్యధికం)' },
+      description: {
+        en: 'Concentrated phosphate fertilizer with highest P content. Best for phosphorus-deficient soils where less quantity is needed.',
+        te: 'అత్యధిక భాస్వరం కంటెంట్‌కు ఉత్తమం. భాస్వరం కొరతలో విస్తరించిన నేలలకు కుదిరిన మోతాదు కూడా సరిపోతుంది.'
+      },
+      usage: {
+        en: ['Apply 30-50 kg per acre', 'Most concentrated form', 'Ideal for small farms', 'Easy to transport and handle'],
+        te: ['ఎకరానికి 30-50 కిలోలు వేయండి', 'అత్యంత సాంద్రీకృత రూపం', 'చిన్న పొలలకు ఆదర్శం', 'రవాణా మరియు నిర్వహణకు సులభం']
+      },
+      crops: { en: 'All crops requiring P, Horticulture', te: 'భా అవసరమైన అన్ని పంటలు, తోటపని' }
+    },
+
+    // POTASSIUM FERTILIZERS
+    {
+      id: 'mop',
+      icon: 'gem',
+      color: '#a63d3d',
+      bg: '#f5d6d6',
+      category: { en: 'Potassium', te: 'పొటాషియం' },
+      name: { en: 'MOP (Muriate of Potash)', te: 'ఎంఓపి (పొటాష్ మురియేట్)' },
+      brand: { en: 'Various Brands', te: 'వివిధ బ్రాండ్‌లు' },
+      formula: 'KCl',
+      nutrient: { en: '60% Potassium', te: '60% పొటాషియం' },
+      description: {
+        en: 'Muriate of Potash. Improves fruit quality, disease resistance, and drought tolerance. Contains chlorine which limits use on some crops.',
+        te: 'ఫ్రూట్ నాణ్యత, వ్యాధి నిరోధకత మరియు కరువు సహనాన్ని మెరుగుపరుస్తుంది.'
+      },
+      usage: {
+        en: ['Apply 25-50 kg per acre', 'Split application recommended', 'Apply during flowering/fruiting', 'Avoid on chloride-sensitive crops'],
+        te: ['ఎకరానికి 25-50 కిలోలు వేయండి', 'విభజిత దరఖాస్తు సిఫారసు చేయబడుతుంది', 'పుష్పించే/ఫలదీప దశలో వేయండి', 'క్లోరైడ్-సున్నితమైన పంటలకు నివారించండి']
+      },
+      crops: { en: 'Banana, Potato, Sugarcane, Citrus', te: 'అరటి, బంగాళదుంప, చెరకు, సిట్రస్' }
+    },
+    {
+      id: 'sop',
+      icon: 'shield-plus',
+      color: '#8b3d5b',
+      bg: '#f0d6e8',
+      category: { en: 'Potassium', te: 'పొటాషియం' },
+      name: { en: 'SOP (Sulfate of Potash)', te: 'ఎస్‌ఓపి (పొటాష్ సల్ఫేట్)' },
+      brand: { en: 'Various Brands', te: 'వివిధ బ్రాండ్‌లు' },
+      formula: 'K₂SO₄',
+      nutrient: { en: '50% K, 18% S', te: '50% పొటా, 18% సల్ఫర్' },
+      description: {
+        en: 'Sulfate of Potash. Premium potassium source without chlorine. Contains sulfur, beneficial for sulfur-deficient soils.',
+        te: 'ప్రీమియం పొటాషియం జన్యువు, క్లోరైడ్ లేనిది. సల్ఫర్ కూడా కలిగి ఉంటుంది.'
+      },
+      usage: {
+        en: ['Apply 20-40 kg per acre', 'Ideal for chloride-sensitive crops', 'Better for horticulture crops', 'Premium option'],
+        te: ['ఎకరానికి 20-40 కిలోలు వేయండి', 'క్లోరైడ్-సున్నితమైన పంటలకు ఆదర్శం', 'తోటపని పంటలకు ఉత్తమం', 'ప్రీమియం ఎంపిక']
+      },
+      crops: { en: 'Tobacco, Grape, Apple, Premium crops', te: 'పొగాకు, ద్రాక్ష, యాపిల్, ప్రీమియం పంటలు' }
+    },
+
+    // COMPLEX/MIXED FERTILIZERS
+    {
+      id: 'npk-20-20-20',
+      icon: 'layers',
+      color: '#3d6b6b',
+      bg: '#c8dede',
+      category: { en: 'Complex', te: 'మిశ్రమ' },
+      name: { en: 'NPK 20-20-20', te: 'ఎన్పీకే 20-20-20' },
+      brand: { en: 'Various Brands', te: 'వివిధ బ్రాండ్‌లు' },
+      formula: 'Mixed NPK',
+      nutrient: { en: 'Balanced 20-20-20', te: 'సమతుల్య 20-20-20' },
+      description: {
+        en: 'Balanced complex fertilizer with equal NPK. Best for general-purpose use throughout crop cycle for all-round growth.',
+        te: 'సమాన NPK ఉన్న సమతుల్య మిశ్రమ ఎరువు. సర్వతోముఖ పెరుగుదలకు సంపూర్ణ చక్రంలో ఉపయోగం.'
+      },
+      usage: {
+        en: ['Apply 50-100 kg per acre', 'Multiple applications possible', 'Can dissolve in water for foliar spray', 'Suitable for all crop stages'],
+        te: ['ఎకరానికి 50-100 కిలోలు వేయండి', 'బహుళ దరఖాస్తులు సాధ్యం', 'ఫోలియార్ స్ప్రే కోసం నీటిలో కరిగించవచ్చు', 'సమస్త పంట దశలకు సరిపోతుంది']
+      },
+      crops: { en: 'Vegetables, Fruits, Flowers, Ornamentals', te: 'కూరగాయలు, పండ్లు, పూలు, అలంకరణ' }
+    },
+    {
+      id: 'npk-10-52-34',
+      icon: 'target',
+      color: '#6b5a3d',
+      bg: '#e8dcc0',
+      category: { en: 'Complex', te: 'మిశ్రమ' },
+      name: { en: 'NPK 10-52-34', te: 'ఎన్పీకే 10-52-34' },
+      brand: { en: 'Various Brands', te: 'వివిధ బ్రాండ్‌లు' },
+      formula: 'High P & K Complex',
+      nutrient: { en: 'N-10, P-52, K-34', te: 'న-10, భా-52, పొటా-34' },
+      description: {
+        en: 'High phosphorus and potassium complex. Ideal for root development, flowering and fruiting. Used as basal fertilizer at planting.',
+        te: 'ఎక్కువ భాస్వరం మరియు పొటాషియం. వేర్ల అభివృద్ధి, పుష్పించడం మరియు ఫలదీపకు ఆదర్శం.'
+      },
+      usage: {
+        en: ['Apply 100-150 kg per acre', 'Best at sowing/planting time', 'Promotes strong root system', 'Enhances flowering and fruiting'],
+        te: ['ఎకరానికి 100-150 కిలోలు వేయండి', 'విత్తడు/నాటడు సమయంలో ఉత్తమం', 'బలమైన వేర్ల వ్యవస్థను ప్రోత్సహిస్తుంది', 'పుష్పించడం మరియు ఫలీభవనం పెంచుతుంది']
+      },
+      crops: { en: 'Cotton, Pulses, Oilseeds, Horticulture', te: 'పత్తి, పప్పు, నూనెగింజలు, తోటపని' }
+    },
+
+    // ORGANIC FERTILIZERS
+    {
+      id: 'compost',
+      icon: 'leaf',
+      color: '#4a6b2a',
+      bg: '#dce8c8',
+      category: { en: 'Organic', te: 'సేంద్రీయ' },
+      name: { en: 'Farm Compost', te: 'ఫార్మ్ కంపోస్ట్' },
+      brand: { en: 'Self-made / Various', te: 'స్వయం తయారు / వివిధం' },
+      formula: 'Organic Matter',
+      nutrient: { en: '0.5-2% NPK + Micronutrients', te: '0.5-2% NPK + సూక్ష్మపోషకాలు' },
+      description: {
+        en: 'Natural decomposed organic matter. Improves soil structure, water holding capacity, and long-term fertility. Rich in soil microbes.',
+        te: 'సహజంగా కుళ్ళిన సేంద్రీయ పదార్థం. నేల నిర్మాణం, నీటిని నిలువ చేసే సామర్థ్యం మరియు దీర్ఘకాలిక సారవంతత్వాన్ని మెరుగుపరుస్తుంది.'
+      },
+      usage: {
+        en: ['Apply 2-4 tons per acre', 'Mix with soil before planting', 'Best applied 2-4 weeks before sowing', 'Can be reapplied every season'],
+        te: ['ఎకరానికి 2-4 టన్నులు వేయండి', 'నాటడానికి ముందు మట్టితో కలపండి', 'విత్తడానికి 2-4 వారాల ముందు ఉత్తమం', 'ప్రతి సీజన్‌లో పునరావృతం చేయవచ్చు']
+      },
+      crops: { en: 'All crops, especially Vegetables', te: 'అన్ని పంటలు, ప్రత్యేకించి కూరగాయలు' }
+    },
+    {
+      id: 'vermicompost',
+      icon: 'bug',
+      color: '#6b4a2a',
+      bg: '#e8dcc8',
+      category: { en: 'Organic', te: 'సేంద్రీయ' },
+      name: { en: 'Vermicompost', te: 'వర్మీకంపోస్ట్' },
+      brand: { en: 'Commercial / Self-made', te: 'వాణిజ్య / స్వయం-తయారు' },
+      formula: 'Worm-Processed Organics',
+      nutrient: { en: '1-2% NPK + Enzymes', te: '1-2% NPK + ఎంజైమ్‌లు' },
+      description: {
+        en: 'Earthworm-processed organic fertilizer. Rich in beneficial microbes and enzymes. Excellent for vegetable gardening and horticulture.',
+        te: 'వానపాములచే ప్రాసెస్ చేయబడిన సేంద్రీయ ఎరువు. ప్రయోజనకరమైన సూక్ష్మజీవులు మరియు ఎంజైమ్‌లు పుష్కలంగా ఉంటాయి.'
+      },
+      usage: {
+        en: ['Apply 1-2 tons per acre', 'Sprinkle around plant base', 'Water well after application', 'Use as mulch or top-dressing'],
+        te: ['ఎకరానికి 1-2 టన్నులు వేయండి', 'మొక్క మూలకు చుట్టూ చల్లండి', 'వేసిన తర్వాత బాగా నీరు పెట్టండి', 'మల్చ్ లేదా టాప్-డ్రెస్సింగ్‌గా ఉపయోగించండి']
+      },
+      crops: { en: 'Vegetables, Flowers, Fruits, Nursery', te: 'కూరగాయలు, పూలు, పండ్లు, చిర నర్సరీ' }
+    },
+    {
+      id: 'poultry-manure',
+      icon: 'feather',
+      color: '#5b4a3d',
+      bg: '#e0d4c8',
+      category: { en: 'Organic', te: 'సేంద్రీయ' },
+      name: { en: 'Poultry Manure', te: 'కోడిపాలు సారం' },
+      brand: { en: 'Self-made / Commercial', te: 'స్వయం / వాణిజ్య' },
+      formula: 'Poultry Droppings',
+      nutrient: { en: '2-3% N, 1-2% P', te: '2-3% న, 1-2% భా' },
+      description: {
+        en: 'Concentrated animal manure. Higher nutrient content than farm compost. Good source of nitrogen and phosphorus when properly composted.',
+        te: 'సాంద్రీకృత జంతు సారం. ఫార్మ్ కంపోస్ట్ కంటే ఎక్కువ పోషక విషయవస్తువు. సరిగ్గా కంపోస్ట్ చేసినప్పుడు నత్రజని మరియు భాస్వరం యొక్క మంచి జన్యువు.'
+      },
+      usage: {
+        en: ['Apply 1-2 tons per acre', 'Always compost before use', 'High nutrient concentration', 'Good for vegetables and crops'],
+        te: ['ఎకరానికి 1-2 టన్నులు వేయండి', 'ఉపయోగించే ముందు ఎప్పుడూ కంపోస్ట్ చేయండి', 'ఎక్కువ పోషక సంద్రీకరణ', 'కూరగాయలు మరియు పంటలకు మంచిది']
+      },
+      crops: { en: 'Vegetables, Cereals, Cash crops', te: 'కూరగాయలు, ధాన్యాలు, నగదు పంటలు' }
+    },
+
+    // MICRONUTRIENT FERTILIZERS
+    {
+      id: 'zinc-sulfate',
+      icon: 'sparkles',
+      color: '#4a5b8b',
+      bg: '#d4dce8',
+      category: { en: 'Micronutrients', te: 'సూక్ష్మపోషకాలు' },
+      name: { en: 'Zinc Sulfate', te: 'జింక్ సల్ఫేట్' },
+      brand: { en: 'Various Brands', te: 'వివిధ బ్రాండ్‌లు' },
+      formula: 'ZnSO₄',
+      nutrient: { en: '21% Zinc', te: '21% జింక్' },
+      description: {
+        en: 'Zinc fertilizer for zinc-deficient soils. Improves grain quality, protein content, and plant immunity. Essential for rice and maize.',
+        te: 'జింక్ కొరత నేలలకు జింక్ ఎరువు. ధాన్య నాణ్యత, ప్రోటీన్ కంటెంట్ మరియు మొక్క రోగనిరోధకతను మెరుగుపరుస్తుంది.'
+      },
+      usage: {
+        en: ['Apply 10-20 kg per acre', 'Apply once per crop cycle', 'Can be sprayed on leaves (2% solution)', 'Especially for rice and maize'],
+        te: ['ఎకరానికి 10-20 కిలోలు వేయండి', 'పంట చక్రానికి ఒకసారి వేయండి', 'ఆకులపై స్ప్రే చేయవచ్చు (2% ద్రవం)', 'వరి మరియు మొక్కజొన్నకు ముఖ్యంగా']
+      },
+      crops: { en: 'Rice, Maize, Pulses, Vegetables', te: 'వరి, మొక్కజొన్న, పప్పు, కూరగాయలు' }
+    },
+    {
+      id: 'iron-chelate',
+      icon: 'shield-alert',
+      color: '#8b4a3d',
+      bg: '#e8d4cc',
+      category: { en: 'Micronutrients', te: 'సూక్ష్మపోషకాలు' },
+      name: { en: 'Iron Chelate (DTPA)', te: 'ఐరన్ చెలేట్' },
+      brand: { en: 'Various Brands', te: 'వివిధ బ్రాండ్‌లు' },
+      formula: 'Fe-DTPA',
+      nutrient: { en: 'Iron Chelate', te: 'ఐరన్ చెలేట్' },
+      description: {
+        en: 'Prevents iron chlorosis in alkaline soils. Improves chlorophyll production and photosynthesis. Available for plant uptake in high pH soils.',
+        te: 'ఆల్కలీన్ నేలలలో ఇనుము క్లోరోసిస్ నివారిస్తుంది. క్లోరోఫిల్ ఉత్పత్తి మరియు ఫోటోసింథసిస్ మెరుగుపరుస్తుంది.'
+      },
+      usage: {
+        en: ['Apply 5-10 kg per acre', 'Foliar spray very effective (0.5% solution)', 'Repeat if symptoms persist', 'For alkaline soil conditions'],
+        te: ['ఎకరానికి 5-10 కిలోలు వేయండి', 'ఫోలియార్ స్ప్రే చాలా సమర్థవంతమైనది (0.5% ద్రవం)', 'లక్షణాలు కొనసాగితే పునరావృతం చేయండి', 'ఆల్కలీన్ నేల పరిస్థితులకు']
+      },
+      crops: { en: 'Citrus, Grapes, Vegetables, Horticulture', te: 'సిట్రస్, ద్రాక్ష, కూరగాయలు, తోటపని' }
+    },
+    {
+      id: 'boron-fertilizer',
+      icon: 'zap',
+      color: '#6b3d5b',
+      bg: '#e8cce0',
+      category: { en: 'Micronutrients', te: 'సూక్ష్మపోషకాలు' },
+      name: { en: 'Boron (Borax/Boric Acid)', te: 'బోరాన్ (బోరాక్స్)' },
+      brand: { en: 'Various Brands', te: 'వివిధ బ్రాండ్‌లు' },
+      formula: 'Na₂B₄O₇',
+      nutrient: { en: '11% Boron', te: '11% బోరాన్' },
+      description: {
+        en: 'Boron for flowering and fruiting. Prevents bud drop and fruit cracking. Essential for oil seeds, vegetables, and fruits.',
+        te: 'పుష్పించడం మరియు ఫలీభవనం కోసం బోరాన్. కొమ్ము డ్రాప్ మరియు పండ్ల పగుళ్లను నివారిస్తుంది.'
+      },
+      usage: {
+        en: ['Apply 1-2 kg per acre', 'Foliar spray effective at flowering', 'Use 0.5% spray solution', 'Critical for pulse and oil crops'],
+        te: ['ఎకరానికి 1-2 కిలోలు వేయండి', 'ఫోలియార్ స్ప్రే పుష్పించే సమయంలో సమర్థవంతమైనది', '0.5% స్ప్రే ద్రవం ఉపయోగించండి', 'పప్పు మరియు నూనె పంటలకు క్రిటికల్']
+      },
+      crops: { en: 'Pulses, Oil seeds, Vegetables, Fruits', te: 'పప్పు, నూనెగింజలు, కూరగాయలు, పండ్లు' }
+    }
+  ];
+
+  const tips = {
+    en: [
+      { icon: 'droplets', title: 'Water Properly', text: 'Always irrigate before and after fertilizer application' },
+      { icon: 'sun', title: 'Right Timing', text: 'Apply early morning or late evening to avoid burn' },
+      { icon: 'scale', title: 'Correct Dosage', text: 'Follow soil test recommendations; never over-apply' },
+      { icon: 'shield-check', title: 'Safety First', text: 'Wear gloves and mask during application' }
+    ],
+    te: [
+      { icon: 'droplets', title: 'సరిగ్గా నీరు పెట్టండి', text: 'ఎరువు వేయడానికి ముందు మరియు తర్వాత నీటిపారుదల చేయండి' },
+      { icon: 'sun', title: 'సరైన సమయం', text: 'కాలిన గాయాలు నివారించడానికి ఉదయం లేదా సాయంత్రం వేయండి' },
+      { icon: 'scale', title: 'సరైన మోతాదు', text: 'నేల పరీక్ష సిఫార్సులను అనుసరించండి; ఎక్కువగా వేయవద్దు' },
+      { icon: 'shield-check', title: 'భద్రత ముఖ్యం', text: 'వేసేటప్పుడు గ్లౌజులు మరియు మాస్క్ ధరించండి' }
+    ]
+  };
+
+  const ui = {
+    en: {
+      brandTag: 'Agricultural Guide',
+      brandSub: 'Smart farming knowledge',
+      tipsTag: 'Essential Tips',
+      tipsTitle: 'General Application Tips',
+      footer: 'Always consult your local agricultural expert for specific recommendations',
+      selectFert: 'Select a fertilizer',
+      selectDesc: 'Click any card to see detailed usage instructions, dosage, and recommended crops.',
+      all: 'All',
+      usage: 'How to Use',
+      crops: 'Recommended Crops',
+      nutrient: 'Nutrient Content',
+      formula: 'Formula'
+    },
+    te: {
+      brandTag: 'వ్యవసాయ మార్గదర్శి',
+      brandSub: 'స్మార్ట్ వ్యవసాయ జ్ఞానం',
+      tipsTag: 'ముఖ్యమైన చిట్కాలు',
+      tipsTitle: 'సాధారణ అప్లికేషన్ చిట్కాలు',
+      footer: 'నిర్దిష్ట సిఫార్సుల కోసం మీ స్థానిక వ్యవసాయ నిపుణుడిని సంప్రదించండి',
+      selectFert: 'ఒక ఎరువును ఎంచుకోండి',
+      selectDesc: 'వివరణాత్మక వినియోగ సూచనలు, మోతాదు మరియు సిఫార్సు చేయబడిన పంటలను చూడటానికి ఏదైనా కార్డుపై క్లిక్ చేయండి.',
+      all: 'అన్నీ',
+      usage: 'ఎలా ఉపయోగించాలి',
+      crops: 'సిఫార్సు చేయబడిన పంటలు',
+      nutrient: 'పోషక పదార్థం',
+      formula: 'ఫార్ములా'
+    }
+  };
+
+  // ============ State ============
+  let currentLang = 'en';
+  let selectedId = 'urea';
+  let currentCategory = 'all';
+
+  const defaultConfig = {
+    app_title_en: 'Fertilizer Guide',
+    app_title_te: 'ఎరువుల మార్గదర్శి',
+    app_subtitle_en: 'A complete guide to fertilizers, their proper usage, and application methods for healthier crops.',
+    app_subtitle_te: 'ఎరువులు, వాటి సరైన వినియోగం మరియు ఆరోగ్యకరమైన పంటల కోసం అప్లికేషన్ పద్ధతులకు సంపూర్ణ మార్గదర్శి.'
+  };
+
+  // ============ Rendering ============
+  function setLanguage(lang) {
+    currentLang = lang;
+    document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+    document.getElementById('lang-te').classList.toggle('active', lang === 'te');
+    renderAll();
+  }
+
+  function renderHeader() {
+    const cfg = window.elementSdk?.config || defaultConfig;
+    const title = currentLang === 'en' 
+      ? (cfg.app_title_en || defaultConfig.app_title_en)
+      : (cfg.app_title_te || defaultConfig.app_title_te);
+    const subtitle = currentLang === 'en'
+      ? (cfg.app_subtitle_en || defaultConfig.app_subtitle_en)
+      : (cfg.app_subtitle_te || defaultConfig.app_subtitle_te);
+    
+    const titleEl = document.getElementById('app-title');
+    const subEl = document.getElementById('app-subtitle');
+    titleEl.textContent = title;
+    subEl.textContent = subtitle;
+    titleEl.classList.toggle('font-telugu', currentLang === 'te');
+    subEl.classList.toggle('font-telugu', currentLang === 'te');
+    
+    document.getElementById('brand-tag').textContent = ui[currentLang].brandTag;
+    document.getElementById('brand-sub').textContent = ui[currentLang].brandSub;
+    document.getElementById('tips-tag').textContent = ui[currentLang].tipsTag;
+    document.getElementById('tips-title').textContent = ui[currentLang].tipsTitle;
+    document.getElementById('footer-text').textContent = ui[currentLang].footer;
+    
+    document.getElementById('tips-title').classList.toggle('font-telugu', currentLang === 'te');
+    document.getElementById('footer-text').classList.toggle('font-telugu', currentLang === 'te');
+  }
+
+  function renderCategories() {
+    const categories = ['all', ...new Set(fertilizers.map(f => f.category.en))];
+    const container = document.getElementById('category-filter');
+    container.innerHTML = categories.map(cat => {
+      const label = cat === 'all' 
+        ? ui[currentLang].all 
+        : (currentLang === 'en' 
+            ? cat 
+            : fertilizers.find(f => f.category.en === cat).category.te);
+      const active = currentCategory === cat;
+      return `<button 
+        onclick="setCategory('${cat}')" 
+        class="category-btn ${active ? 'active' : 'bg-white text-[#2d3319] hover:bg-[#ebe3d3]'} px-4 py-2 rounded-full text-sm font-semibold ${currentLang === 'te' ? 'font-telugu' : ''}"
+      >${label}</button>`;
+    }).join('');
+  }
+
+  function setCategory(cat) {
+    currentCategory = cat;
+    renderCategories();
+    renderGrid();
+  }
+
+  function renderGrid() {
+    const container = document.getElementById('fertilizer-grid');
+    const filtered = currentCategory === 'all' 
+      ? fertilizers 
+      : fertilizers.filter(f => f.category.en === currentCategory);
+    
+    container.innerHTML = filtered.map(f => {
+      const isSelected = f.id === selectedId;
+      return `
+        <button 
+          onclick="selectFertilizer('${f.id}')"
+          class="card-shadow card-shadow-hover bg-white rounded-2xl p-5 text-left transition-all ${isSelected ? 'ring-2 ring-[#2d3319]' : ''}"
+        >
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:${f.bg}">
+              <i data-lucide="${f.icon}" style="width: 22px; height: 22px; color: ${f.color};"></i>
+            </div>
+            <span class="tag px-2 py-1 rounded-md ${currentLang === 'te' ? 'font-telugu' : ''}" style="background:${f.bg}; color:${f.color}">
+              ${f.category[currentLang]}
+            </span>
+          </div>
+          <h3 class="font-display text-xl font-bold text-[#2d3319] mb-1 ${currentLang === 'te' ? 'font-telugu' : ''}">
+            ${f.name[currentLang]}
+          </h3>
+          <div class="text-xs text-[#6b7355] mb-3 font-mono">${f.formula}</div>
+          <p class="text-sm text-[#4a5338] leading-relaxed line-clamp-2 ${currentLang === 'te' ? 'font-telugu' : ''}">
+            ${f.description[currentLang]}
+          </p>
+          <div class="mt-4 pt-3 border-t border-[#ebe3d3] flex items-center gap-1.5 text-xs font-semibold text-[#658a42] ${currentLang === 'te' ? 'font-telugu' : ''}">
+            <i data-lucide="zap" style="width: 12px; height: 12px;"></i>
+            ${f.nutrient[currentLang]}
+          </div>
+        </button>
+      `;
+    }).join('');
+    lucide.createIcons();
+  }
+
+  function selectFertilizer(id) {
+    selectedId = id;
+    renderGrid();
+    renderDetail();
+  }
+
+  function renderDetail() {
+    const f = fertilizers.find(x => x.id === selectedId);
+    const panel = document.getElementById('detail-panel');
+    if (!f) {
+      panel.innerHTML = `
+        <div class="p-8 text-center">
+          <i data-lucide="hand-pointer" class="mx-auto mb-3 text-[#8a9466]" style="width: 40px; height: 40px;"></i>
+          <h3 class="font-display text-lg font-bold text-[#2d3319]">${ui[currentLang].selectFert}</h3>
+          <p class="text-sm text-[#6b7355] mt-2">${ui[currentLang].selectDesc}</p>
+        </div>`;
+      lucide.createIcons();
+      return;
+    }
+    
+    const teClass = currentLang === 'te' ? 'font-telugu' : '';
+    
+    panel.innerHTML = `
+      <div class="detail-section">
+        <div class="p-6 border-b border-[#ebe3d3]" style="background: linear-gradient(135deg, ${f.bg} 0%, #ffffff 100%)">
+          <div class="flex items-start gap-4">
+            <div class="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0" style="background:${f.color}">
+              <i data-lucide="${f.icon}" class="text-white" style="width: 26px; height: 26px;"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="tag mb-1 ${teClass}" style="color:${f.color}">${f.category[currentLang]}</div>
+              <h2 class="font-display text-2xl font-bold text-[#2d3319] leading-tight ${teClass}">${f.name[currentLang]}</h2>
+              <div class="text-xs text-[#6b7355] mt-1 font-mono">${f.formula}</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="p-6 space-y-5 max-h-[600px] overflow-y-auto">
+          <p class="text-[#2d3319] leading-relaxed ${teClass}">${f.description[currentLang]}</p>
+          
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-[#f4efe6] rounded-xl p-3">
+              <div class="tag text-[#658a42] mb-1 ${teClass}">${ui[currentLang].nutrient}</div>
+              <div class="text-sm font-bold text-[#2d3319] ${teClass}">${f.nutrient[currentLang]}</div>
+            </div>
+            <div class="bg-[#f4efe6] rounded-xl p-3">
+              <div class="tag text-[#658a42] mb-1 ${teClass}">${ui[currentLang].formula}</div>
+              <div class="text-sm font-bold text-[#2d3319] font-mono">${f.formula}</div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="book-open" class="text-[#658a42]" style="width: 16px; height: 16px;"></i>
+              <h4 class="tag text-[#658a42] ${teClass}">${ui[currentLang].usage}</h4>
+            </div>
+            <ul class="space-y-2">
+              ${f.usage[currentLang].map((u, i) => `
+                <li class="flex gap-3 text-sm text-[#2d3319] ${teClass}">
+                  <span class="flex-shrink-0 w-5 h-5 rounded-full bg-[#2d3319] text-[#c9d080] text-xs font-bold flex items-center justify-center mt-0.5">${i+1}</span>
+                  <span class="leading-relaxed">${u}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+          
+          <div class="bg-[#2d3319] rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <i data-lucide="wheat" class="text-[#c9d080]" style="width: 16px; height: 16px;"></i>
+              <div class="tag text-[#c9d080] ${teClass}">${ui[currentLang].crops}</div>
+            </div>
+            <div class="text-sm font-semibold text-[#f4efe6] ${teClass}">${f.crops[currentLang]}</div>
+          </div>
+        </div>
+      </div>
+    `;
+    lucide.createIcons();
+  }
+
+  function renderTips() {
+    const container = document.getElementById('tips-grid');
+    const teClass = currentLang === 'te' ? 'font-telugu' : '';
+    container.innerHTML = tips[currentLang].map(t => `
+      <div class="bg-[#3d4623] rounded-xl p-4 border border-[#4a5338]">
+        <div class="w-9 h-9 rounded-lg bg-[#c9d080] flex items-center justify-center mb-3">
+          <i data-lucide="${t.icon}" class="text-[#2d3319]" style="width: 18px; height: 18px;"></i>
+        </div>
+        <h4 class="font-bold text-[#f4efe6] mb-1 ${teClass}">${t.title}</h4>
+        <p class="text-sm text-[#c9d080] leading-relaxed ${teClass}">${t.text}</p>
+      </div>
+    `).join('');
+    lucide.createIcons();
+  }
+
+  function renderAll() {
+    renderHeader();
+    renderCategories();
+    renderGrid();
+    renderDetail();
+    renderTips();
+  }
+
+  // ============ Element SDK ============
+  if (window.elementSdk) {
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => {
+        renderHeader();
+      },
+      mapToCapabilities: () => ({
+        recolorables: [],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ['app_title_en', config.app_title_en || defaultConfig.app_title_en],
+        ['app_title_te', config.app_title_te || defaultConfig.app_title_te],
+        ['app_subtitle_en', config.app_subtitle_en || defaultConfig.app_subtitle_en],
+        ['app_subtitle_te', config.app_subtitle_te || defaultConfig.app_subtitle_te]
+      ])
+    });
+  }
+
+  // Initial render
+  renderAll();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f475d61a4ec2992',t:'MTc3NzU2MDY4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
