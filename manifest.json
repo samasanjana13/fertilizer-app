@@ -1,0 +1,13 @@
+{
+  "background_color": "#6fc49b",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "samasanjana13.github",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "samasanjana13.github",
+  "start_url": "/",
+  "theme_color": "#4898de",
+  "id": "com.fertilizerguide ",
+  "description": "A comprehensive fertilizer guide on usage A comprehensive guide to fertilizers, providing detailed usage instructions, nutrient content, and crop recommendations to help farmers and gardeners improve plant health."
+}
